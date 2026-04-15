@@ -6,180 +6,282 @@
 <title>VLXD Hà Ánh</title>
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI';}
-
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI'}
 body{
-background:#f5f5f5;
+    background:url('https://img4.thuthuatphanmem.vn/uploads/2019/12/16/hinh-nen-4k-thien-nhien-cuc-dep_024352152.jpg') no-repeat center/cover fixed;
+    background-color:rgba(255,255,255,0.92);
+    background-blend-mode:overlay;
 }
 
-/* NAV */
+/* NAVBAR */
 .navbar{
-background:#c0392b;
-padding:10px 5%;
-display:flex;
-justify-content:space-between;
-align-items:center;
-color:white;
+    background:#c0392b;
+    padding:10px 5%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+.logo-container{display:flex;align-items:center;gap:10px}
+.logo-img{width:50px;height:50px}
+.navbar h1{color:#fff;font-size:20px}
+
+.search-container{display:flex}
+.search-input{
+    padding:8px;
+    border:none;
+    border-radius:20px 0 0 20px;
+    width:250px;
+}
+.search-button{
+    padding:8px 15px;
+    border:none;
+    background:#e74c3c;
+    color:#fff;
+    border-radius:0 20px 20px 0;
 }
 
-/* CHAT FIX */
+.nav-links a{color:#fff;margin-left:20px;text-decoration:none}
+
+.cart-icon{font-size:20px;position:relative}
+.cart-badge{
+    position:absolute;
+    top:-10px;right:-15px;
+    background:#2ecc71;
+    color:#fff;
+    border-radius:50%;
+    padding:3px 7px;
+    font-size:12px;
+}
+
+/* STORE */
+#store-info{
+    background:#fff;
+    margin:20px auto;
+    max-width:1000px;
+    padding:20px;
+    border-radius:10px;
+}
+
+/* PRODUCTS */
+#home{
+    padding:20px;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:20px;
+}
+.product-card{
+    background:#fff;
+    padding:15px;
+    border-radius:10px;
+    text-align:center;
+}
+.product-img{height:150px;width:100%;object-fit:contain}
+.product-price{color:red;font-weight:bold}
+
+.btn{padding:8px 15px;border:none;border-radius:5px;cursor:pointer}
+.add-to-cart{background:green;color:#fff}
+
+/* CART */
+.cart-section,#checkout{
+    display:none;
+    max-width:900px;
+    margin:20px auto;
+    background:#fff;
+    padding:20px;
+    border-radius:10px;
+}
+.cart-item{
+    display:flex;
+    justify-content:space-between;
+    margin:10px 0;
+}
+
+/* CHAT */
 .chat-popup{
-position:fixed;
-bottom:20px;
-right:20px;
-width:320px;
-height:420px;
-background:#fff;
-border-radius:12px;
-box-shadow:0 8px 25px rgba(0,0,0,0.25);
-display:none;
-flex-direction:column;
-overflow:hidden;
-z-index:999;
+    position:fixed;
+    bottom:20px;
+    right:20px;
+    width:300px;
+    background:#fff;
+    display:none;
+    flex-direction:column;
+    border-radius:10px;
 }
-
 .chat-header{
-background:#c0392b;
-color:white;
-padding:12px;
-display:flex;
-justify-content:space-between;
-align-items:center;
-font-weight:bold;
+    background:#c0392b;
+    color:#fff;
+    padding:10px;
 }
-
-.close-chat{
-cursor:pointer;
-font-size:18px;
-}
-
 .chat-messages{
-flex:1;
-padding:10px;
-overflow-y:auto;
-background:#f5f5f5;
-display:flex;
-flex-direction:column;
-gap:8px;
+    height:250px;
+    overflow:auto;
+    padding:10px;
 }
+.chat-message{padding:8px;border-radius:10px;margin:5px 0}
+.sent{background:#3498db;color:#fff;text-align:right}
+.received{background:#ddd}
 
-.chat-message{
-padding:8px 12px;
-border-radius:15px;
-max-width:70%;
-font-size:14px;
-}
+.chat-input-area{display:flex}
+.chat-input-area input{flex:1;padding:8px}
+.chat-send-btn{background:green;color:#fff;border:none;padding:8px}
 
-.sent{
-background:#2980b9;
-color:white;
-align-self:flex-end;
-}
-
-.received{
-background:#e0e0e0;
-align-self:flex-start;
-}
-
-.chat-input{
-display:flex;
-border-top:1px solid #ddd;
-}
-
-.chat-input input{
-flex:1;
-padding:10px;
-border:none;
-outline:none;
-}
-
-.chat-input button{
-background:#27ae60;
-color:white;
-border:none;
-padding:0 15px;
-cursor:pointer;
-}
-
-.chat-toggle{
-position:fixed;
-bottom:20px;
-right:20px;
-width:55px;
-height:55px;
-background:#c0392b;
-color:white;
-border-radius:50%;
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:22px;
-cursor:pointer;
-box-shadow:0 4px 15px rgba(0,0,0,0.3);
+.chat-toggle-btn{
+    position:fixed;
+    bottom:80px;
+    right:20px;
+    background:#c0392b;
+    color:#fff;
+    width:50px;height:50px;
+    border-radius:50%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    cursor:pointer;
 }
 </style>
 </head>
 
 <body>
 
-<div class="navbar">
-<h2>VLXD Hà Ánh</h2>
+<!-- NAV -->
+<nav class="navbar">
+<div class="logo-container">
+<img src="assets/logo.png" class="logo-img">
+<h1>VLXD HÀ ÁNH</h1>
 </div>
 
-<!-- CHAT POPUP -->
-<div id="chat" class="chat-popup">
-
-<div class="chat-header">
-<span>Hỗ trợ khách hàng</span>
-<span class="close-chat" onclick="toggleChat()">✖</span>
+<div class="search-container">
+<input class="search-input" placeholder="Tìm kiếm...">
+<button class="search-button">🔍</button>
 </div>
 
-<div id="messages" class="chat-messages">
-<div class="chat-message received">Xin chào 👋 bạn cần hỗ trợ gì?</div>
+<div class="nav-links">
+<a href="#" onclick="showView('home')">Trang chủ</a>
+<a href="#" onclick="displayCart()">Giỏ hàng 
+<span id="cart-badge" class="cart-badge">0</span></a>
+</div>
+</nav>
+
+<!-- STORE -->
+<section id="store-info">
+<p>Địa chỉ: Phú Thọ</p>
+<button class="btn" onclick="toggleChatPopup()">Chat</button>
+</section>
+
+<!-- PRODUCTS -->
+<section id="home">
+<div class="product-card">
+<img src="assets/ximang.jpg" class="product-img">
+<h3>Xi măng</h3>
+<p class="product-price">120000 VNĐ</p>
+<button class="btn add-to-cart">Thêm</button>
 </div>
 
-<div class="chat-input">
-<input id="input" placeholder="Nhập tin nhắn..." onkeypress="handleKey(event)">
-<button onclick="send()">Gửi</button>
+<div class="product-card">
+<img src="assets/cat.jpg" class="product-img">
+<h3>Cát</h3>
+<p class="product-price">850000 VNĐ</p>
+<button class="btn add-to-cart">Thêm</button>
+</div>
+</section>
+
+<!-- CART -->
+<section class="cart-section" id="cart-section">
+<h2>Giỏ hàng</h2>
+<div id="cart-list"></div>
+<div id="total-price">0 VNĐ</div>
+</section>
+
+<!-- CHAT -->
+<div id="chat-popup" class="chat-popup">
+<div class="chat-header">Chat</div>
+<div id="chat-messages" class="chat-messages"></div>
+<div class="chat-input-area">
+<input id="chat-input">
+<button class="chat-send-btn" onclick="sendMessage()">Gửi</button>
+</div>
 </div>
 
-</div>
-
-<!-- BUTTON -->
-<div class="chat-toggle" onclick="toggleChat()">💬</div>
+<div class="chat-toggle-btn" onclick="toggleChatPopup()">💬</div>
 
 <script>
-let open=false;
+let cart=[];
+let isChatOpen=false;
 
-function toggleChat(){
-open=!open;
-document.getElementById("chat").style.display=open?"flex":"none";
+const cartBadge=document.getElementById('cart-badge');
+const chatPopup=document.getElementById('chat-popup');
+const chatMessages=document.getElementById('chat-messages');
+const chatInput=document.getElementById('chat-input');
+
+/* VIEW */
+function showView(v){
+document.getElementById('home').style.display=v=='home'?'grid':'none';
+document.getElementById('cart-section').style.display=v=='cart'?'block':'none';
 }
 
-/* SEND MESSAGE */
-function send(){
-let input=document.getElementById("input");
-let text=input.value.trim();
-if(text==="") return;
+/* CART */
+function updateCartBadge(){
+cartBadge.textContent=cart.length;
+}
 
-let box=document.getElementById("messages");
+document.querySelectorAll('.add-to-cart').forEach(btn=>{
+btn.onclick=function(){
+let card=this.closest('.product-card');
+let name=card.querySelector('h3').innerText;
+let price=parseInt(card.querySelector('.product-price').innerText);
 
-/* message mình */
-box.innerHTML+=`<div class="chat-message sent">${text}</div>`;
-input.value="";
-box.scrollTop=box.scrollHeight;
+cart.push({name,price});
+alert("Đã thêm "+name);
+updateCartBadge();
+}
+});
 
-/* auto trả lời */
+function displayCart(){
+showView('cart');
+let list=document.getElementById('cart-list');
+list.innerHTML="";
+let total=0;
+
+cart.forEach((item,i)=>{
+list.innerHTML+=`
+<div class="cart-item">
+<span>${item.name}</span>
+<span>${item.price}</span>
+<button onclick="removeItem(${i})">Xóa</button>
+</div>`;
+total+=item.price;
+});
+
+document.getElementById('total-price').innerText=total+" VNĐ";
+}
+
+function removeItem(i){
+cart.splice(i,1);
+displayCart();
+}
+
+/* CHAT */
+function toggleChatPopup(){
+isChatOpen=!isChatOpen;
+chatPopup.style.display=isChatOpen?'flex':'none';
+}
+
+function sendMessage(){
+let text=chatInput.value.trim();
+if(!text)return;
+
+chatMessages.innerHTML+=`<div class="chat-message sent">${text}</div>`;
+chatInput.value="";
+
 setTimeout(()=>{
-box.innerHTML+=`<div class="chat-message received">Shop đã nhận: "${text}"</div>`;
-box.scrollTop=box.scrollHeight;
-},800);
+chatMessages.innerHTML+=`<div class="chat-message received">Shop sẽ phản hồi sớm</div>`;
+chatMessages.scrollTop=chatMessages.scrollHeight;
+},500);
 }
 
-/* ENTER để gửi */
-function handleKey(e){
-if(e.key==="Enter") send();
-}
+chatInput.addEventListener("keypress",e=>{
+if(e.key==="Enter")sendMessage();
+});
 </script>
 
 </body>
