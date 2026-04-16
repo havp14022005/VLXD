@@ -534,189 +534,165 @@
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 
     <script>
-        // --- State Management ---
-        let cart = [];
-        let isChatOpen = false;
-        let currentView = 'home';
-        const chatPopup = document.getElementById('chat-popup');
-        const chatMessages = document.getElementById('chat-messages');
-        const chatInput = document.getElementById('chat-input');
-        const chatToggleBtn = document.querySelector('.chat-toggle-btn');
-        const cartBadge = document.getElementById('cart-badge');
+    let cart = [];
+    let isChatOpen = false;
+    let currentView = 'home';
 
-        // --- Navigation & View Switching ---
-        function showView(viewName) {
-            currentView = viewName;
-            document.getElementById('home').style.display = viewName === 'home' ? 'grid' : 'none';
-            document.getElementById('cart-section').style.display = viewName === 'cart' ? 'block' : 'none';
-            document.getElementById('checkout').style.display = viewName === 'checkout' ? 'block' : 'none';
-        }
+    const chatPopup = document.getElementById('chat-popup');
+    const chatMessages = document.getElementById('chat-messages');
+    const chatInput = document.getElementById('chat-input');
+    const chatToggleBtn = document.querySelector('.chat-toggle-btn');
+    const cartBadge = document.getElementById('cart-badge');
 
-        // --- Product & Cart Logic ---
-        function updateCartBadge() {
-            cartBadge.textContent = cart.length;
-            cartBadge.style.display = cart.length > 0 ? 'block' : 'none';
-        }
+    // ================= VIEW =================
+    function showView(viewName) {
+        currentView = viewName;
+        document.getElementById('home').style.display = viewName === 'home' ? 'grid' : 'none';
+        document.getElementById('cart-section').style.display = viewName === 'cart' ? 'block' : 'none';
+        document.getElementById('checkout').style.display = viewName === 'checkout' ? 'block' : 'none';
+    }
 
-        document.querySelectorAll('.add-to-cart').forEach(button => {
-            button.addEventListener('click', function() {
-                const productCard = this.closest('.product-card');
-                const productName = productCard.querySelector('h3').textContent;
-                const priceText = productCard.querySelector('.product-price').textContent;
-                const price = parseInt(priceText.replace(/[^0-9]/g, ''));
-                
-                cart.push({ name: productName, price: price });
-                alert(`Đã thêm "${productName}" vào giỏ hàng`);
-                updateCartBadge();
-            });
-        });
+    // ================= CART =================
+    function updateCartBadge() {
+        let totalQuantity = cart.reduce((sum, item) => sum + item.quantity, 0);
+        cartBadge.textContent = totalQuantity;
+        cartBadge.style.display = totalQuantity > 0 ? 'block' : 'none';
+    }
 
-        function displayCart() {
-            showView('cart');
-            const cartList = document.getElementById('cart-list');
-            const totalPrice = document.getElementById('total-price');
-            cartList.innerHTML = '';
-            let total = 0;
+    // Thêm vào giỏ
+    document.querySelectorAll('.add-to-cart').forEach(button => {
+        button.addEventListener('click', function() {
+            const card = this.closest('.product-card');
+            const name = card.querySelector('h3').textContent;
+            const priceText = card.querySelector('.product-price').textContent;
+            const price = parseInt(priceText.replace(/[^0-9]/g, ''));
 
-            if (cart.length === 0) {
-                cartList.innerHTML = '<p>Giỏ hàng của bạn đang trống</p>';
-                totalPrice.textContent = 'Tổng tiền: 0 VNĐ';
-                updateCartBadge();
-                return;
+            let existing = cart.find(item => item.name === name);
+
+            if (existing) {
+                existing.quantity++;
+            } else {
+                cart.push({ name, price, quantity: 1 });
             }
 
-            cart.forEach((item, index) => {
-                const itemHTML = `
-                    <div class="cart-item" data-index="${index}">
-                        <span>${item.name}</span>
-                        <span>${item.price.toLocaleString('vi-VN')} VNĐ</span>
-                        <input type="number" min="1" value="1" class="item-quantity" data-index="${index}" onchange="updateItemQuantity(${index}, this.value)">
-                        <button class="btn remove-item" data-index="${index}">Xóa</button>
-                    </div>
-                `;
-                cartList.innerHTML += itemHTML;
-                total += item.price; // Tính tổng đơn giản (chưa nhân số lượng)
-            });
-
-            totalPrice.textContent = `Tổng tiền: ${total.toLocaleString('vi-VN')} VNĐ`;
-            addCartEvents();
             updateCartBadge();
+            alert(`Đã thêm "${name}"`);
+        });
+    });
+
+    // Hiển thị giỏ hàng
+    function displayCart() {
+        showView('cart');
+
+        const cartList = document.getElementById('cart-list');
+        const totalPrice = document.getElementById('total-price');
+
+        cartList.innerHTML = '';
+        let total = 0;
+
+        if (cart.length === 0) {
+            cartList.innerHTML = '<p>Giỏ hàng trống</p>';
+            totalPrice.textContent = 'Tổng tiền: 0 VNĐ';
+            return;
         }
 
-        function updateItemQuantity(index, quantity) {
-            const newQuantity = parseInt(quantity);
-            if (newQuantity > 0) {
-                // Trong ứng dụng thực tế, bạn cần cập nhật giá trị item trong mảng cart
-                // và tính toán lại tổng tiền dựa trên số lượng.
-                // Ví dụ: cart[index].quantity = newQuantity;
-                alert("Chức năng cập nhật số lượng đang được phát triển.");
-            }
-            displayCart(); // Cập nhật lại hiển thị giỏ hàng
-        }
+        cart.forEach((item, index) => {
+            let itemTotal = item.price * item.quantity;
+            total += itemTotal;
 
-        function addCartEvents() {
-            document.querySelectorAll('.remove-item').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const index = parseInt(this.dataset.index);
-                    cart.splice(index, 1);
-                    displayCart();
-                });
-            });
-        }
+            cartList.innerHTML += `
+                <div class="cart-item">
+                    <span>${item.name}</span>
+                    <span>${item.price.toLocaleString()} x ${item.quantity}</span>
 
-        function showCheckout() {
-            if (cart.length === 0) {
-                alert('Giỏ hàng của bạn đang trống!');
-                return;
-            }
-            showView('checkout');
-            
-            const orderSummary = document.getElementById('order-summary');
-            const finalTotal = document.getElementById('final-total');
-            let total = 0;
-            orderSummary.innerHTML = '';
+                    <input type="number" min="1" value="${item.quantity}" 
+                        onchange="updateQuantity(${index}, this.value)" class="item-quantity">
 
-            cart.forEach(item => {
-                orderSummary.innerHTML += `<p>${item.name} - ${item.price.toLocaleString('vi-VN')} VNĐ</p>`;
-                total += item.price;
-            });
+                    <span>${itemTotal.toLocaleString()} VNĐ</span>
 
-            finalTotal.textContent = `Tổng cộng: ${total.toLocaleString('vi-VN')} VNĐ`;
-        }
-
-        // --- Chat Popup Logic ---
-        function toggleChatPopup() {
-            isChatOpen = !isChatOpen;
-            chatPopup.style.display = isChatOpen ? 'flex' : 'none';
-            chatToggleBtn.style.display = isChatOpen ? 'none' : 'flex'; // Ẩn nút toggle khi popup mở
-            if (isChatOpen) {
-                chatInput.focus();
-            }
-        }
-
-        function sendMessage() {
-            const messageText = chatInput.value.trim();
-            if (messageText === '') return;
-
-            const newMessage = document.createElement('div');
-            newMessage.classList.add('chat-message', 'sent');
-            newMessage.textContent = messageText;
-            chatMessages.appendChild(newMessage);
-
-            chatInput.value = '';
-            chatMessages.scrollTop = chatMessages.scrollHeight; // Cuộn xuống cuối
-
-            // Simulate a response after a delay
-            setTimeout(receiveMessage, 1000, "Cảm ơn bạn đã liên hệ. Chúng tôi sẽ phản hồi sớm nhất có thể.");
-        }
-
-        function receiveMessage(text) {
-            const newMessage = document.createElement('div');
-            newMessage.classList.add('chat-message', 'received');
-            newMessage.textContent = text;
-            chatMessages.appendChild(newMessage);
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        }
-
-        // --- Initialization ---
-        document.addEventListener('DOMContentLoaded', () => {
-            showView('home'); // Hiển thị trang chủ ban đầu
-            updateCartBadge(); // Cập nhật badge giỏ hàng khi tải trang
-            // Load initial rating stars (example)
-            document.querySelectorAll('.star').forEach(star => {
-                star.onclick = function() {
-                    const ratingContainer = this.parentNode;
-                    const rating = this.dataset.rating;
-                    const stars = ratingContainer.querySelectorAll('.star');
-                    stars.forEach((s, index) => {
-                        if (index < this.dataset.rating) {
-                            s.classList.add('filled');
-                            s.classList.remove('empty');
-                        } else {
-                            s.classList.remove('filled');
-                            s.classList.add('empty');
-                        }
-                    });
-                };
-                // Assign rating values to stars for interaction
-                let ratingValue = 1;
-                this.parentNode.querySelectorAll('.star').forEach(s => {
-                    s.dataset.rating = ratingValue++;
-                    if (s.classList.contains('filled')) {
-                        s.style.cursor = 'pointer';
-                    } else {
-                        s.style.cursor = 'pointer';
-                    }
-                });
-            });
+                    <button class="btn remove-item" onclick="removeItem(${index})">Xóa</button>
+                </div>
+            `;
         });
 
-        // Handle clicking on logo/title to go home
-        document.querySelector('.logo-container').addEventListener('click', () => showView('home'));
-        document.querySelector('.navbar h1').addEventListener('click', () => showView('home'));
+        totalPrice.textContent = `Tổng tiền: ${total.toLocaleString()} VNĐ`;
+        updateCartBadge();
+    }
 
-        // Add Font Awesome for stars if needed (using inline span is simpler here)
-        // If you want interactive stars, you'd need more JS.
-    </script>
+    function updateQuantity(index, value) {
+        let qty = parseInt(value);
+        if (qty < 1) qty = 1;
+
+        cart[index].quantity = qty;
+        displayCart();
+    }
+
+    function removeItem(index) {
+        cart.splice(index, 1);
+        displayCart();
+    }
+
+    // ================= CHECKOUT =================
+    function showCheckout() {
+        if (cart.length === 0) {
+            alert("Giỏ hàng trống!");
+            return;
+        }
+
+        showView('checkout');
+
+        const orderSummary = document.getElementById('order-summary');
+        const finalTotal = document.getElementById('final-total');
+
+        orderSummary.innerHTML = '';
+        let total = 0;
+
+        cart.forEach(item => {
+            let itemTotal = item.price * item.quantity;
+            total += itemTotal;
+
+            orderSummary.innerHTML += `
+                <p>${item.name} (${item.quantity}) - ${itemTotal.toLocaleString()} VNĐ</p>
+            `;
+        });
+
+        finalTotal.textContent = `Tổng cộng: ${total.toLocaleString()} VNĐ`;
+    }
+
+    // ================= CHAT =================
+    function toggleChatPopup() {
+        isChatOpen = !isChatOpen;
+        chatPopup.style.display = isChatOpen ? 'flex' : 'none';
+        chatToggleBtn.style.display = isChatOpen ? 'none' : 'flex';
+    }
+
+    function sendMessage() {
+        const text = chatInput.value.trim();
+        if (!text) return;
+
+        addMessage(text, 'sent');
+        chatInput.value = '';
+
+        setTimeout(() => {
+            addMessage("Shop sẽ phản hồi sớm nhất!", 'received');
+        }, 800);
+    }
+
+    function addMessage(text, type) {
+        const msg = document.createElement('div');
+        msg.className = `chat-message ${type}`;
+        msg.textContent = text;
+
+        chatMessages.appendChild(msg);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    // ================= INIT =================
+    document.addEventListener('DOMContentLoaded', () => {
+        showView('home');
+        updateCartBadge();
+    });
+</script>
+        
 </body>
 </html>
