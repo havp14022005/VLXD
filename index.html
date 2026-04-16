@@ -70,6 +70,17 @@
             cursor: pointer;
             position: relative; /* Cần cho badge */
         }
+        .cart-wrapper {
+            position: relative;
+            margin-left: 20px;
+            font-size: 1.5rem;
+            color: white;
+            cursor: pointer;
+        }
+
+        .cart-wrapper:hover {
+            transform: scale(1.1);
+        }
         .cart-badge {
             position: absolute;
             top: -6px;
@@ -546,8 +557,7 @@
     <div class="chat-toggle-btn" onclick="toggleChatPopup()">💬</div>
 
     <!-- Thư viện Font Awesome cho icon giỏ hàng -->
-    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
-
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <script>
     let cart = [];
     let isChatOpen = false;
