@@ -226,21 +226,29 @@
         .checkout-step input[type="radio"] { margin-right: 0.8rem; margin-bottom: 1rem; }
 
         /* Chat Popup */
-        .chat-popup {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 1001; /* Cao hơn navbar */
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.3);
-            background: #fff;
-            display: none; /* Ban đầu ẩn */
-            width: 350px;
-            max-width: calc(100% - 40px); /* Đảm bảo không tràn màn hình */
-        }
-        .chat-popup.open { display: flex; flex-direction: column; } /* Hiển thị khi mở */
+       .chat-popup {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 350px;
+    max-width: 95%;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
 
+    transform: translateY(120%);
+    opacity: 0;
+    transition: all 0.3s ease;
+
+    display: flex;
+    flex-direction: column;
+    z-index: 1001;
+}
+
+.chat-popup.open {
+    transform: translateY(0);
+    opacity: 1;
+}
         .chat-header {
             background: #c0392b;
             color: white;
@@ -425,7 +433,7 @@
 
         <!-- Sản phẩm 4: Sắt thép -->
         <div class="product-card">
-            <img src="assets/sat.jpg" alt="Sắt thép thanh Ø12mm" class="product-img">
+            <img src="assets/thep.jpg" alt="Sắt thép thanh Ø12mm" class="product-img">
             <h3>Sắt thép thanh Ø12mm</h3>
             <div class="rating">
                 <span class="star filled">★</span><span class="star filled">★</span><span class="star filled">★</span><span class="star">☆</span><span class="star">☆</span>
@@ -660,32 +668,52 @@
     }
 
     // ================= CHAT =================
-    function toggleChatPopup() {
-        isChatOpen = !isChatOpen;
-        chatPopup.style.display = isChatOpen ? 'flex' : 'none';
-        chatToggleBtn.style.display = isChatOpen ? 'none' : 'flex';
+   function toggleChatPopup() {
+    isChatOpen = !isChatOpen;
+
+    if (isChatOpen) {
+        chatPopup.classList.add('open');
+        chatToggleBtn.style.display = 'none';
+        chatInput.focus();
+    } else {
+        chatPopup.classList.remove('open');
+        chatToggleBtn.style.display = 'flex';
     }
+}
+        chatInput.addEventListener("keypress", function(e) {
+    if (e.key === "Enter") {
+        sendMessage();
+    }
+});
 
     function sendMessage() {
-        const text = chatInput.value.trim();
-        if (!text) return;
+    const text = chatInput.value.trim();
+    if (!text) return;
 
-        addMessage(text, 'sent');
-        chatInput.value = '';
+    addMessage(text, 'sent');
+    chatInput.value = '';
 
-        setTimeout(() => {
-            addMessage("Shop sẽ phản hồi sớm nhất!", 'received');
-        }, 800);
-    }
+    setTimeout(() => {
+        addMessage("Shop đang kiểm tra tin nhắn...", 'received');
+    }, 500);
 
+    setTimeout(() => {
+        addMessage("Cảm ơn bạn! Shop sẽ phản hồi sớm 👌", 'received');
+    }, 1200);
+}
     function addMessage(text, type) {
-        const msg = document.createElement('div');
-        msg.className = `chat-message ${type}`;
-        msg.textContent = text;
+    const msg = document.createElement('div');
+    msg.className = `chat-message ${type}`;
+    msg.textContent = text;
 
-        chatMessages.appendChild(msg);
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-    }
+    chatMessages.appendChild(msg);
+
+    // scroll mượt
+    chatMessages.scrollTo({
+        top: chatMessages.scrollHeight,
+        behavior: "smooth"
+    });
+}
 
     // ================= INIT =================
     document.addEventListener('DOMContentLoaded', () => {
