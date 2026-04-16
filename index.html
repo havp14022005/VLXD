@@ -29,7 +29,17 @@
             z-index: 1000; /* Đảm bảo hiển thị trên các phần tử khác */
         }
         .logo-container { display: flex; align-items: center; gap: 0.8rem; }
-        .logo-img { width: 50px; height: 50px; object-fit: contain; cursor: pointer; } /* Nhỏ hơn một chút, có thể click về home */
+       
+        .logo-img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 50%;
+            background: white;
+            padding: 5px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            cursor: pointer;
+        }
         .navbar h1 { color: white; font-size: 1.6rem; text-shadow: 0 2px 4px rgba(0,0,0,0.3); cursor: pointer; } /* Tên cửa hàng có thể click về home */
         .nav-links {
             display: flex;
@@ -460,7 +470,7 @@
     <!-- Thanh điều hướng với logo, tìm kiếm, giỏ hàng -->
     <nav class="navbar">
         <div class="logo-container" onclick="window.location.href='#home'">
-            <img src="assets/z7728362763376_5672797aced638ac89b58849b6156b08.jpg" alt="Logo VLXD Hà Ánh" class="logo-img">
+            <img src="assets/logonoi.jpg" alt="Logo VLXD Hà Ánh" class="logo-img">
             <h1 onclick="window.location.href='#home'">VLXD HÀ ÁNH</h1>
         </div>
         <div class="search-container">
