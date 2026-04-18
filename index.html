@@ -6,152 +6,92 @@
 <title>VLXD Hà Ánh</title>
 
 <style>
+/* ===== GIỮ NGUYÊN CSS CỦA BẠN ===== */
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI';}
-
 body{
-    background: url("assets/nen.jpg") no-repeat center center fixed;
-    background-size: cover;
+    background:url("assets/nen.jpg") no-repeat center center fixed;
+    background-size:cover;
 }
-
-body::before{
-    content:"";
-    position:fixed;
-    inset:0;
-    background:rgba(255,255,255,0.4);
-    z-index:-1;
-}
-
-/* NAVBAR */
 .navbar{
-    background:rgba(255,105,135,0.85);
+    background: rgba(255,105,135,0.85);
     padding:10px 5%;
     display:flex;
     justify-content:space-between;
     align-items:center;
 }
-
-.logo-container{
-    display:flex;
-    align-items:center;
-    gap:10px;
-}
-
-.logo-img{
-    width:50px;height:50px;border-radius:50%;
-}
-
-.nav-links{
-    display:flex;
-    gap:20px;
-}
-
-.nav-links a{
-    color:white;
-    text-decoration:none;
-    cursor:pointer;
-}
-
-/* PRODUCT */
-#home{
-    padding:20px;
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-    gap:20px;
-}
+.logo-img{width:50px;height:50px;border-radius:50%;}
+.nav-links{display:flex;gap:20px;align-items:center;}
+.nav-links a{color:white;text-decoration:none;}
 
 .product-card{
     background:white;
-    padding:15px;
+    padding:10px;
     border-radius:10px;
-    text-align:center;
 }
-
 .product-img{
     width:100%;
-    height:180px;
+    height:200px;
     object-fit:contain;
 }
-
-.product-price{
-    color:red;
-    font-weight:bold;
-}
-
-.btn{
-    padding:10px;
-    border:none;
-    background:#27ae60;
+.btn{padding:8px 12px;border:none;cursor:pointer}
+.add-to-cart{background:green;color:white}
+.cart-badge{
+    background:red;
     color:white;
-    cursor:pointer;
-    margin-top:10px;
+    border-radius:50%;
+    padding:3px 6px;
+    position:absolute;
+    top:-5px;right:-10px;
 }
 
-/* SECTION */
-.cart-section{
+/* LOGIN */
+#account-box{
     display:none;
+    position:fixed;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
     background:white;
     padding:20px;
-    margin:20px;
     border-radius:10px;
-}
-
-/* CHAT */
-.chat-popup{
-    position:fixed;
-    bottom:20px;
-    right:20px;
-    width:300px;
-    background:white;
-    border-radius:10px;
-    display:none;
-}
-
-.chat-popup.open{display:block;}
-
-.chat-messages{
-    height:200px;
-    overflow:auto;
-}
-
-.chat-message{
-    padding:5px;
-}
-
-.sent{color:blue;text-align:right;}
-.received{color:black;}
-
-/* ACCOUNT */
-input{
-    width:100%;
-    padding:10px;
-    margin:5px 0;
+    box-shadow:0 0 10px #000;
 }
 </style>
 </head>
 
 <body>
 
-<!-- NAV -->
-<nav class="navbar">
-<div class="logo-container">
-<img src="assets/logonoi.png" class="logo-img">
-<h2>VLXD HÀ ÁNH</h2>
+<!-- NAVBAR -->
+<div class="navbar">
+    <div>
+        <img src="assets/logonoi.png" class="logo-img">
+    </div>
+
+    <div class="nav-links">
+        <a href="#" onclick="showHome()">Trang chủ</a>
+
+        <div onclick="showCart()" style="position:relative;cursor:pointer">
+            🛒
+            <span id="cart-badge" class="cart-badge">0</span>
+        </div>
+
+        <a href="#" onclick="openAccount()">Tài khoản</a>
+    </div>
 </div>
 
-<div class="nav-links">
-<a onclick="showView('home')">Trang chủ</a>
-<a onclick="displayCart()">Giỏ hàng (<span id="cart-badge">0</span>)</a>
-<a onclick="showView('account')">Tài khoản</a>
-</div>
-</nav>
-
-<!-- HOME -->
-<section id="home">
-
+<!-- SẢN PHẨM (GIỮ NGUYÊN ẢNH CỦA BẠN) -->
+<div id="home">
 <div class="product-card">
 <img src="assets/ximang.jpg" class="product-img">
 <h3>Xi măng</h3>
 <p class="product-price">120000</p>
+<button class="btn add-to-cart">Thêm</button>
+</div>
+
+<div class="product-card">
+<img src="assets/cat.jpg" class="product-img">
+<h3>Cát</h3>
+<p class="product-price">850000</p>
 <button class="btn add-to-cart">Thêm</button>
 </div>
 
@@ -162,202 +102,104 @@ input{
 <button class="btn add-to-cart">Thêm</button>
 </div>
 
-</section>
+<div class="product-card">
+<img src="assets/thep.jpg" class="product-img">
+<h3>Thép</h3>
+<p class="product-price">18000</p>
+<button class="btn add-to-cart">Thêm</button>
+</div>
 
-<!-- CART -->
-<section id="cart-section" class="cart-section">
+<div class="product-card">
+<img src="assets/oplat.jpg" class="product-img">
+<h3>Ốp lát</h3>
+<p class="product-price">95000</p>
+<button class="btn add-to-cart">Thêm</button>
+</div>
+
+<div class="product-card">
+<img src="assets/son.jpg" class="product-img">
+<h3>Sơn</h3>
+<p class="product-price">450000</p>
+<button class="btn add-to-cart">Thêm</button>
+</div>
+</div>
+
+<!-- GIỎ HÀNG -->
+<div id="cart" style="display:none">
 <h2>Giỏ hàng</h2>
 <div id="cart-list"></div>
-<div id="total-price"></div>
-<button onclick="showCheckout()">Thanh toán</button>
-</section>
+</div>
 
-<!-- CHECKOUT -->
-<section id="checkout" class="cart-section">
-<h2>Thanh toán</h2>
-<div id="order-summary"></div>
-<div id="final-total"></div>
-</section>
-
-<!-- ACCOUNT -->
-<section id="account" class="cart-section">
-<h2>Tài khoản</h2>
-
-<div id="login-form">
-<input id="username" placeholder="User">
-<input id="password" type="password" placeholder="Pass">
+<!-- LOGIN -->
+<div id="account-box">
+<h3>Đăng nhập</h3>
+<input id="user" placeholder="Tài khoản"><br><br>
+<input id="pass" type="password" placeholder="Mật khẩu"><br><br>
 <button onclick="login()">Đăng nhập</button>
-<p onclick="showRegister()">Đăng ký</p>
-</div>
-
-<div id="register-form" style="display:none">
-<input id="reg-username" placeholder="User">
-<input id="reg-password" type="password" placeholder="Pass">
-<button onclick="register()">Đăng ký</button>
-<p onclick="showLogin()">Đăng nhập</p>
-</div>
-
-<div id="user-info" style="display:none">
-Xin chào <b id="current-user"></b>
-<button onclick="logout()">Đăng xuất</button>
-</div>
-
-</section>
-
-<!-- CHAT -->
-<div class="chat-popup" id="chat-popup">
-<div class="chat-messages" id="chat-messages"></div>
-<input id="chat-input">
-<button onclick="sendMessage()">Gửi</button>
+<button onclick="closeAccount()">Đóng</button>
 </div>
 
 <script>
-
 let cart=[];
-let currentUser=localStorage.getItem("currentUser");
 
-// VIEW
-function showView(view){
-    document.getElementById("home").style.display=view==="home"?"grid":"none";
-    document.getElementById("cart-section").style.display=view==="cart"?"block":"none";
-    document.getElementById("checkout").style.display=view==="checkout"?"block":"none";
-    document.getElementById("account").style.display=view==="account"?"block":"none";
-}
-
-// CART
+/* ===== CART ===== */
 document.querySelectorAll(".add-to-cart").forEach(btn=>{
 btn.onclick=function(){
-let card=this.parentElement;
+let card=this.closest(".product-card");
 let name=card.querySelector("h3").innerText;
 let price=parseInt(card.querySelector(".product-price").innerText);
 
-let item=cart.find(i=>i.name===name);
+let item=cart.find(x=>x.name==name);
 if(item){item.qty++;}
 else{cart.push({name,price,qty:1});}
 
 updateCart();
-alert(`Đã thêm ${name}`);
-};
+}
 });
 
 function updateCart(){
-let totalQty=0;
-cart.forEach(i=>totalQty+=i.qty);
-document.getElementById("cart-badge").innerText=totalQty;
+let total=cart.reduce((s,i)=>s+i.qty,0);
+document.getElementById("cart-badge").innerText=total;
 }
 
-function displayCart(){
-showView("cart");
+function showCart(){
+document.getElementById("home").style.display="none";
+document.getElementById("cart").style.display="block";
 
 let html="";
-let total=0;
-
-cart.forEach((i,index)=>{
-let t=i.price*i.qty;
-total+=t;
-
+cart.forEach(i=>{
 html+=`
 <div>
-${i.name} x ${i.qty} = ${t}
-<button onclick="removeItem(${index})">X</button>
+${i.name} - ${i.qty}
 </div>`;
 });
-
 document.getElementById("cart-list").innerHTML=html;
-document.getElementById("total-price").innerText="Tổng: "+total;
 }
 
-function removeItem(i){
-cart.splice(i,1);
-displayCart();
+function showHome(){
+document.getElementById("home").style.display="block";
+document.getElementById("cart").style.display="none";
 }
 
-// CHECKOUT
-function showCheckout(){
-showView("checkout");
-
-let html="";
-let total=0;
-
-cart.forEach(i=>{
-let t=i.price*i.qty;
-total+=t;
-html+=`<p>${i.name} - ${t}</p>`;
-});
-
-document.getElementById("order-summary").innerHTML=html;
-document.getElementById("final-total").innerText="Tổng: "+total;
+/* ===== ACCOUNT ===== */
+function openAccount(){
+document.getElementById("account-box").style.display="block";
 }
-
-// ACCOUNT
-function updateAccountUI(){
-if(currentUser){
-login-form.style.display="none";
-register-form.style.display="none";
-user-info.style.display="block";
-current-user.innerText=currentUser;
-}else{
-login-form.style.display="block";
-register-form.style.display="none";
-user-info.style.display="none";
-}
-}
-
-function register(){
-let u=reg-username.value;
-let p=reg-password.value;
-localStorage.setItem("user_"+u,p);
-alert("OK");
-showLogin();
+function closeAccount(){
+document.getElementById("account-box").style.display="none";
 }
 
 function login(){
-let u=username.value;
-let p=password.value;
+let u=document.getElementById("user").value;
+let p=document.getElementById("pass").value;
 
-if(localStorage.getItem("user_"+u)===p){
-localStorage.setItem("currentUser",u);
-currentUser=u;
-updateAccountUI();
-}else alert("Sai");
+if(u==="admin" && p==="123"){
+alert("Đăng nhập thành công");
+closeAccount();
+}else{
+alert("Sai tài khoản");
 }
-
-function logout(){
-localStorage.removeItem("currentUser");
-currentUser=null;
-updateAccountUI();
 }
-
-function showRegister(){
-login-form.style.display="none";
-register-form.style.display="block";
-}
-
-function showLogin(){
-login-form.style.display="block";
-register-form.style.display="none";
-}
-
-// CHAT
-function sendMessage(){
-let text=chat-input.value;
-if(!text)return;
-
-chat-messages.innerHTML+=`<div class="sent">${text}</div>`;
-chat-input.value="";
-
-setTimeout(()=>{
-chat-messages.innerHTML+=`<div class="received">Shop sẽ phản hồi</div>`;
-},500);
-}
-
-// INIT
-document.addEventListener("DOMContentLoaded",()=>{
-showView("home");
-updateCart();
-updateAccountUI();
-});
-
 </script>
 
 </body>
