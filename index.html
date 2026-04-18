@@ -10,7 +10,7 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
        
         body {
-            background: url('https://media.tapchixaydung.vn/mediav2/upload/userfiles2021/images/tranthuthao/11_2024/11_6_vlxd1_06112024084854_132_02122024142139_136.jpg') no-repeat center center fixed;
+            background: src="assets/nen.jpg" no-repeat center center fixed;
             background-size: cover;
         }
         
@@ -520,7 +520,7 @@
         <span id="cart-badge" class="cart-badge">0</span>
     </div>
 
-    <a href="#account">Tài khoản</a>
+    <a href="#" onclick="showView('account')">Tài khoản</a>
 </div>
     </nav>
 
@@ -799,6 +799,71 @@
         cart.splice(index, 1);
         displayCart();
     }
+    let currentUser = localStorage.getItem("currentUser");
+
+// Hiển thị form phù hợp
+function updateAccountUI() {
+    if (currentUser) {
+        document.getElementById("login-form").style.display = "none";
+        document.getElementById("register-form").style.display = "none";
+        document.getElementById("user-info").style.display = "block";
+        document.getElementById("current-user").textContent = currentUser;
+    } else {
+        document.getElementById("login-form").style.display = "block";
+        document.getElementById("register-form").style.display = "none";
+        document.getElementById("user-info").style.display = "none";
+    }
+}
+
+// Đăng ký
+function register() {
+    let user = document.getElementById("reg-username").value;
+    let pass = document.getElementById("reg-password").value;
+
+    if (!user || !pass) {
+        alert("Nhập đầy đủ thông tin!");
+        return;
+    }
+
+    localStorage.setItem("user_" + user, pass);
+    alert("Đăng ký thành công!");
+    showLogin();
+}
+
+// Đăng nhập
+function login() {
+    let user = document.getElementById("username").value;
+    let pass = document.getElementById("password").value;
+
+    let savedPass = localStorage.getItem("user_" + user);
+
+    if (savedPass === pass) {
+        localStorage.setItem("currentUser", user);
+        currentUser = user;
+        updateAccountUI();
+        alert("Đăng nhập thành công!");
+    } else {
+        alert("Sai tài khoản hoặc mật khẩu!");
+    }
+}
+
+// Đăng xuất
+function logout() {
+    localStorage.removeItem("currentUser");
+    currentUser = null;
+    updateAccountUI();
+}
+
+// chuyển form
+function showRegister() {
+    document.getElementById("login-form").style.display = "none";
+    document.getElementById("register-form").style.display = "block";
+}
+
+function showLogin() {
+    document.getElementById("login-form").style.display = "block";
+    document.getElementById("register-form").style.display = "none";
+}
 
     // ================= CHECKOUT =================
     function showCheckout() {
@@ -826,6 +891,29 @@
 
         finalTotal.textContent = `Tổng cộng: ${total.toLocaleString()} VNĐ`;
     }
+        <!-- Tài khoản -->
+<section id="account" class="cart-section">
+    <h2>Tài khoản</h2>
+
+    <div id="login-form">
+        <input type="text" id="username" placeholder="Tên đăng nhập">
+        <input type="password" id="password" placeholder="Mật khẩu">
+        <button class="btn" onclick="login()">Đăng nhập</button>
+        <p>Chưa có tài khoản? <a href="#" onclick="showRegister()">Đăng ký</a></p>
+    </div>
+
+    <div id="register-form" style="display:none;">
+        <input type="text" id="reg-username" placeholder="Tên đăng nhập">
+        <input type="password" id="reg-password" placeholder="Mật khẩu">
+        <button class="btn" onclick="register()">Đăng ký</button>
+        <p>Đã có tài khoản? <a href="#" onclick="showLogin()">Đăng nhập</a></p>
+    </div>
+
+    <div id="user-info" style="display:none;">
+        <p>Xin chào, <strong id="current-user"></strong></p>
+        <button class="btn" onclick="logout()">Đăng xuất</button>
+    </div>
+</section>
 
     // ================= CHAT =================
    function toggleChatPopup() {
@@ -877,9 +965,10 @@
 
     // ================= INIT =================
     document.addEventListener('DOMContentLoaded', () => {
-        showView('home');
-        updateCartBadge();
-    });
+    showView('home');
+    updateCartBadge();
+    updateAccountUI();
+});
 </script>
         
 </body>
